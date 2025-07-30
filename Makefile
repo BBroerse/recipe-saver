@@ -16,9 +16,16 @@ install-tools:
 	go install github.com/swaggo/swag/cmd/swag@latest
 	go install github.com/securego/gosec/v2/cmd/gosec@latest
 	go install github.com/conventionalcommit/commitlint@latest
+	go install golang.org/x/vuln/cmd/govulncheck@latest
 
 lint:
 	golangci-lint run
+
+security-gosec:
+	gosec ./...
+
+security-govuln:
+	govulncheck ./...
 
 test:
 	go test -v ./...
