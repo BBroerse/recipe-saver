@@ -15,6 +15,7 @@ help:
 install-tools:
 	go install github.com/swaggo/swag/cmd/swag@latest
 	go install github.com/securego/gosec/v2/cmd/gosec@latest
+	go install github.com/conventionalcommit/commitlint@latest
 
 lint:
 	golangci-lint run
@@ -23,10 +24,10 @@ test:
 	go test -v ./...
 
 build:
-	GOOS=linux GOARCH=amd64 go build -o bin/$(APP_NAME) $(CMD_PATH)
+	GOOS=linux GOARCH=amd64 go build -o bin/$(APP_NAME) .
 
 run:
-	go run $(CMD_PATH)
+	go run main.go
 
 clean:
 	rm -rf bin/

@@ -8,6 +8,7 @@
 *.so
 *.dylib
 .DS_Store
+bin/
 
 # Test binary, built with `go test -c`
 *.test
@@ -30,6 +31,6 @@ go.work.sum
 .env
 
 # Editor/IDE
-# .idea/
-# .vscode/
+.idea/
+.vscode/
 
