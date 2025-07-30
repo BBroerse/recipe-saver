@@ -1,0 +1,9 @@
+pre-commit:
+  gofmt:
+    run: gofmt -s -w .
+  golangci:
+    run: golangci-lint run
+
+commit-msg
+  lint-message:
+    run: commitlint lint $1
