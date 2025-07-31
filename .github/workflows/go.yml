@@ -45,17 +45,17 @@ jobs:
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: |
           ${{ runner.os }}-go-
+          
+    - name: Check Go module consistency
+      run: |
+        go mod tidy
+        git diff --exit-code go.mod go.sum
 
     - name: Install dependencies
       run: go mod tidy
 
     - name: Install tools
       run: make install-tools
-
-    - name: Check Go module consistency
-      run: |
-        go mod tidy
-        git diff --exit-code go.mod go.sum
 
   security:
     name: Security Checks (gosec + govulncheck)
