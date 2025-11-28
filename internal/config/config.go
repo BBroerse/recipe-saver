@@ -7,26 +7,39 @@ import (
 )
 
 type Config struct {
-	Port             string
-	OllamaBaseUrl    string
+	// Environment
+	Environment string
+	Port        string
+
+	// Server timeouts
+	RequestTimeout time.Duration
+	ReadTimeout    time.Duration
+	WriteTimeout   time.Duration
+	IdleTimeout    time.Duration
+
+	// Logging
+	LogLevel string
+
+	// LLM
+	OllamaBaseUrl string
+
+	// Notion tokens
 	NotionToken      string
 	NotionDatabaseId string
-	RequestTimeout   time.Duration
-	ReadTimeout      time.Duration
-	WriteTimeout     time.Duration
-	IdleTimeout      time.Duration
 }
 
 func Load() *Config {
 	return &Config{
+		Environment:      getEnv("ENV", "development"),
 		Port:             getEnv("PORT", "8080"),
-		OllamaBaseUrl:    getEnv("OLLAMA_BASE_URL", "http://localhost:11434"),
-		NotionToken:      getEnv("NOTION_TOKEN", ""),
-		NotionDatabaseId: getEnv("NOTION_DATABASE_ID", ""),
 		RequestTimeout:   getDurationEnv("REQUEST_TIMEOUT", 30*time.Minute),
 		ReadTimeout:      getDurationEnv("READ_TIMEOUT", 10*time.Minute),
 		WriteTimeout:     getDurationEnv("WRITE_TIMEOUT", 10*time.Minute),
 		IdleTimeout:      getDurationEnv("IDLE_TIMEOUT", 60*time.Minute),
+		LogLevel:         getEnv("LOG_LEVEL", "info"),
+		OllamaBaseUrl:    getEnv("OLLAMA_BASE_URL", "http://ollama:11434"),
+		NotionToken:      getEnv("NOTION_TOKEN", ""),
+		NotionDatabaseId: getEnv("NOTION_DATABASE_ID", ""),
 	}
 }
 

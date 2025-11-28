@@ -1,23 +1,69 @@
-version: "2"
+run:
+  timeout: 5m
+  tests: true
+  modules-download-mode: readonly
+
 linters:
-  exclusions:
-    generated: lax
-    presets:
-      - comments
-      - common-false-positives
-      - legacy
-      - std-error-handling
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
-formatters:
   enable:
-    - gofmt
-    - goimports
-  exclusions:
-    generated: lax
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
+    - errcheck      # Check for unchecked errors
+    - gosimple      # Simplify code
+    - govet         # Go vet
+    - ineffassign   # Detect ineffectual assignments
+    - staticcheck   # Advanced static analysis
+    - unused        # Check for unused code
+    - gofmt         # Check formatting
+    - goimports     # Check imports
+    - misspell      # Check for misspelled words
+    - revive        # Drop-in replacement for golint
+    - typecheck     # Type checking
+    - gosec         # Security issues
+    - bodyclose     # Check HTTP response body is closed
+    - copyloopvar   # Check for loop variable capture
+    - gocritic      # Comprehensive Go linter
+    - noctx         # Check for http.Request without context
+    - unparam       # Check for unused function parameters
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+  govet:
+    shadow: true
+
+  revive:
+    confidence: 0.8
+
+  gosec:
+    excludes:
+      - G104 # Allow unhandled errors in defer statements
+
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+    disabled-checks:
+      - unnecessaryDefer
+
+issues:
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+  exclude-rules:
+    # Exclude test files from certain checks
+    - path: _test\.go
+      linters:
+        - errcheck
+        - gosec
+
+    # Exclude main.go from certain checks
+    - path: cmd/api/main\.go
+      linters:
+        - errcheck
+
+output:
+  formats: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
