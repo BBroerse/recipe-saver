@@ -62,8 +62,3 @@ issues:
     - path: cmd/api/main\.go
       linters:
         - errcheck
-
-output:
-  formats: colored-line-number
-  print-issued-lines: true
-  print-linter-name: true
