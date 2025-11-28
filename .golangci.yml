@@ -1,64 +1,60 @@
+version: "2"
 run:
-  timeout: 5m
-  tests: true
   modules-download-mode: readonly
-
+  tests: true
 linters:
   enable:
-    - errcheck      # Check for unchecked errors
-    - gosimple      # Simplify code
-    - govet         # Go vet
-    - ineffassign   # Detect ineffectual assignments
-    - staticcheck   # Advanced static analysis
-    - unused        # Check for unused code
-    - gofmt         # Check formatting
-    - goimports     # Check imports
-    - misspell      # Check for misspelled words
-    - revive        # Drop-in replacement for golint
-    - typecheck     # Type checking
-    - gosec         # Security issues
-    - bodyclose     # Check HTTP response body is closed
-    - copyloopvar   # Check for loop variable capture
-    - gocritic      # Comprehensive Go linter
-    - noctx         # Check for http.Request without context
-    - unparam       # Check for unused function parameters
-
-linters-settings:
-  errcheck:
-    check-type-assertions: true
-    check-blank: true
-
-  govet:
-    shadow: true
-
-  revive:
-    confidence: 0.8
-
-  gosec:
-    excludes:
-      - G104 # Allow unhandled errors in defer statements
-
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - style
-      - performance
-    disabled-checks:
-      - unnecessaryDefer
-
+    - bodyclose
+    - copyloopvar
+    - gocritic
+    - gosec
+    - misspell
+    - noctx
+    - revive
+    - unparam
+  settings:
+    errcheck:
+      check-type-assertions: true
+      check-blank: true
+    gocritic:
+      disabled-checks:
+        - unnecessaryDefer
+      enabled-tags:
+        - diagnostic
+        - style
+        - performance
+    gosec:
+      excludes:
+        - G104
+    govet:
+      enable:
+        - shadow
+    revive:
+      confidence: 0.8
+  exclusions:
+    generated: lax
+    rules:
+      - linters:
+          - errcheck
+          - gosec
+        path: _test\.go
+      - linters:
+          - errcheck
+        path: cmd/api/main\.go
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
 issues:
-  exclude-use-default: false
   max-issues-per-linter: 0
   max-same-issues: 0
-
-  exclude-rules:
-    # Exclude test files from certain checks
-    - path: _test\.go
-      linters:
-        - errcheck
-        - gosec
-
-    # Exclude main.go from certain checks
-    - path: cmd/api/main\.go
-      linters:
-        - errcheck
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

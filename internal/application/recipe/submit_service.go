@@ -27,10 +27,10 @@ type SubmitRecipeService struct {
 }
 
 // NewSubmitRecipeService creates a new recipe submission service
-func NewSubmitRecipeService(eventBus events.EventBus, logger logger.Logger) *SubmitRecipeService {
+func NewSubmitRecipeService(eventBus events.EventBus, log logger.Logger) *SubmitRecipeService {
 	return &SubmitRecipeService{
 		eventBus: eventBus,
-		logger:   logger,
+		logger:   log,
 	}
 }
 

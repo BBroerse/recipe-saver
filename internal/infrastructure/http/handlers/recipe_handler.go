@@ -15,9 +15,9 @@ type RecipeHandler struct {
 	submitService *recipe.SubmitRecipeService
 }
 
-func NewRecipeHandler(logger logger.Logger, submitService *recipe.SubmitRecipeService) *RecipeHandler {
+func NewRecipeHandler(log logger.Logger, submitService *recipe.SubmitRecipeService) *RecipeHandler {
 	return &RecipeHandler{
-		logger:        logger,
+		logger:        log,
 		submitService: submitService,
 	}
 }

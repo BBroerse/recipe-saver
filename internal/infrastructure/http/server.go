@@ -19,10 +19,10 @@ type Server struct {
 	srv      *http.Server
 }
 
-func NewServer(cfg *config.Config, logger logger.Logger, eventBus events.EventBus) *Server {
+func NewServer(cfg *config.Config, log logger.Logger, eventBus events.EventBus) *Server {
 	return &Server{
 		config:   cfg,
-		logger:   logger,
+		logger:   log,
 		eventBus: eventBus,
 	}
 }
