@@ -20,6 +20,10 @@ type SubmitRecipeResult struct {
 	RecipeID string
 }
 
+type RecipeSubmitter interface {
+	Execute(ctx context.Context, cmd SubmitRecipeCommand) (*SubmitRecipeResult, error)
+}
+
 // SubmitRecipeService handles the business logic for submitting recipes
 type SubmitRecipeService struct {
 	eventBus events.EventBus
@@ -64,3 +68,5 @@ func (s *SubmitRecipeService) Execute(ctx context.Context, cmd SubmitRecipeComma
 		RecipeID: recipeID,
 	}, nil
 }
+
+var _ RecipeSubmitter = (*SubmitRecipeService)(nil)

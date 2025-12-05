@@ -12,10 +12,10 @@ import (
 
 type RecipeHandler struct {
 	logger        logger.Logger
-	submitService *recipe.SubmitRecipeService
+	submitService recipe.RecipeSubmitter
 }
 
-func NewRecipeHandler(log logger.Logger, submitService *recipe.SubmitRecipeService) *RecipeHandler {
+func NewRecipeHandler(log logger.Logger, submitService recipe.RecipeSubmitter) *RecipeHandler {
 	return &RecipeHandler{
 		logger:        log,
 		submitService: submitService,
@@ -23,7 +23,7 @@ func NewRecipeHandler(log logger.Logger, submitService *recipe.SubmitRecipeServi
 }
 
 type SubmitRecipeRequest struct {
-	RecipeText string `json:"recipe_text" binding:"required"`
+	RecipeText string `json:"recipe_text"`
 }
 
 type SubmitRecipeResponse struct {
@@ -32,9 +32,8 @@ type SubmitRecipeResponse struct {
 }
 
 type ErrorResponse struct {
-	Error   string `json:"error"`
-	Code    string `json:"code"`
-	Details string `json:"details,omitempty"`
+	Error string `json:"error"`
+	Code  string `json:"code"`
 }
 
 // SubmitRecipe handles POST /api/v1/recipes
@@ -45,9 +44,8 @@ func (h *RecipeHandler) SubmitRecipe(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.logger.Warn("Invalid request body", logger.Error(err))
 		c.JSON(http.StatusBadRequest, ErrorResponse{
-			Error:   "Invalid request body",
-			Code:    "INVALID_REQUEST",
-			Details: err.Error(),
+			Error: "Invalid request structure",
+			Code:  "INVALID_JSON",
 		})
 		return
 	}
@@ -76,17 +74,15 @@ func (h *RecipeHandler) mapErrorToResponse(err error) (int, ErrorResponse) {
 	// Check for domain validation errors
 	if errors.Is(err, domain.ErrRecipeTextEmpty) {
 		return http.StatusBadRequest, ErrorResponse{
-			Error:   "Recipe text validation failed",
-			Code:    "EMPTY_TEXT",
-			Details: err.Error(),
+			Error: "Recipe text validation failed",
+			Code:  "EMPTY_TEXT",
 		}
 	}
 
 	if errors.Is(err, domain.ErrRecipeTextTooLong) {
 		return http.StatusBadRequest, ErrorResponse{
-			Error:   "Recipe text validation failed",
-			Code:    "TEXT_TOO_LONG",
-			Details: err.Error(),
+			Error: "Recipe text validation failed",
+			Code:  "TEXT_TOO_LONG",
 		}
 	}
 
